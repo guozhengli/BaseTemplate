@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/jquery-treetable/css/jquery.treetable.css" >
+<link rel="stylesheet" type="text/css" href="/static/jquery-treetable/css/jquery.treetable.theme.default.css" >
+<script type="text/javascript" src="/static/jquery-treetable/jquery.treetable.js"></script>
+<script type="text/javascript">
+    function save_role(){
+        var url = "{% url 'role_prem' role.id %}";
+        $("#role-prem-form").attr("action", url).submit();
+
+    };
+</script>
+{% endblock %}
+
+{% block navigation %}
+    <h1>
+        权限配置
+        <small>修改权限相关信息</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">role</a></li>
+      </ol>
+{% endblock %}
+{%block content%}
+<div class="col-md-12">
+	<div class="box border blue">
+        <div class="box-header">
+            <a href="javascript:;" onclick="javascript:save_role();" class="box-title"><span class="badge bg-green">保存</span></a>
+        </div>
+		<div class="box-body">
+            <form id="role-prem-form" method="POST" action="." class="form form-horizontal projects-form">{% csrf_token %}
+                <table  class="table " id="prem_table" >
+                    <thead>
+                        <tr>
+                            <th width="2%" class="sorting_disabled"><input type="checkbox" id="selectall" onclick="checkboxchange()"/></th>
+                            <th>ID</th>
+                            <th>描述</th>
+                            <th>权限</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-tbody">
+
+                    </tbody>
+                </table>
+                </form>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+init_table();
+$("#prem_table").treetable({
+    column: 1,
+    expandable: true,
+    searchSelector: ".search",
+});
+
+function init_table(){
+     {% for prem in prems %}
+        {% if prem.parentid == -1 %}
+            {% if prem in role_prems %}
+                 context='<tr id="prem{{ prem.id }}"  data-tt-id="{{ prem.id }}"  class="">\
+                                   <td><input type="checkbox" value="{{ prem.id }}" name="prem" checked="checked" /></td>\
+                                   <td>{{ prem.id }}</td>\
+                                   <td>{{ prem.desc }}</td>\
+                                   <td>{{ prem.name }}</td>\
+                                   </tr>';
+            {% else %}
+                 context='<tr id="prem{{ prem.id }}" data-tt-id="{{ prem.id }}"  class="">\
+                               <td><input type="checkbox" value="{{ prem.id }}" name="prem" /></td>\
+                               <td>{{ prem.id }}</td> \
+                               <td>{{ prem.desc }}</td> \
+                               <td>{{ prem.name }}</td> \
+                           </tr>';
+            {% endif %}
+            $("#table-tbody").append(context);
+        {% else %}
+            {% if prem in role_prems %}
+                 context='<tr id="prem{{ prem.id }}" data-tt-id="{{ prem.id }}" data-tt-parent-id="{{ prem.parentid }}"  class="warning">\
+                                   <td><input type="checkbox" value="{{ prem.id }}" name="prem" checked="checked" /></td>\
+                                   <td>{{ prem.id }}</td>\
+                                   <td>{{ prem.desc }}</td>\
+                                   <td>{{ prem.name }}</td>\
+                                   </tr>';
+            {% else %}
+                 context='<tr id="prem{{ prem.id }}" data-tt-id="{{ prem.id }}" data-tt-parent-id="{{ prem.parentid }}"  class="warning">\
+                               <td><input type="checkbox" value="{{ prem.id }}" name="prem" /></td>\
+                               <td>{{ prem.id }}</td> \
+                               <td>{{ prem.desc }}</td> \
+                               <td>{{ prem.name }}</td> \
+                           </tr>';
+            {% endif %}
+            $("#prem{{ prem.parentid }}").after(context);
+        {% endif %}
+     {% endfor %}
+}
+
+function checkboxchange() {
+        if ($("#selectall").attr('checked')) {
+            $("#prem_table").find("input[type='checkbox']").attr("checked", false);
+        } else {
+            $("#prem_table").find("input[type='checkbox']").prop("checked", true);
+            $("#prem_table").find("input[type='checkbox']").attr('checked', true);
+        }
+    };
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+	<meta name="description" content="诸葛修车网">
+	<meta name="author" content="诸葛修车网">
+	{% block headtitle %}
+	<title>运维平台</title>
+	{% endblock %}
+    {% include 'link_css.html' %}
+
+</head>
+<body >
+    <div id="wrapper">
+        {% block all_content %}
+            {% include 'header.html' %}
+            <section id="page">
+                {% include 'nav.html' %}
+                <div id="main-content">
+                    <div class="container">
+                        <div class="row">
+                            <div id="content" class="col-lg-12">
+                                {%block content%}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endblock %}
+    </div>
+
+{% include 'script.html' %}
+{% block head %} {% endblock %}
+<script>
+    jQuery(document).ready(function() {
+        {% block setPage %}{% endblock %}
+        App.init();
+        {% block ready_fun %} {% endblock %}
+    });
+</script>
+
+</body>
+</html>

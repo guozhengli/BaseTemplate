@@ -1,0 +1,8 @@
+Django==1.9.7
+djangorestframework==3.3.3
+MySQL-python==1.2.5
+requests==2.10.0
+ansible==2.1.0.0
+celery==3.1.23
+redis==2.10.5
+arrow==0.10.0

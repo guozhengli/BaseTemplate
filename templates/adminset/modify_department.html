@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block head%}
+<link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"  />
+<script type="text/javascript" src="/static/js/select2.min.js"></script>
+
+<script type="text/javascript">
+$(".js-example-basic-multiple").select2();
+</script>
+
+<script type="text/javascript">
+	$('#form_id').validationEngine('attach', {
+		  promptPosition: 'centerRight',
+		  scroll: true,
+		  autoHidePrompt:true,
+		  autoHideDelay:3000,
+		  showOneMessage:true,
+		});
+</script>
+{% endblock %}
+{% block navigation %}
+    <h1>
+        部门修改
+        <small>修改部门相关信息</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">department</a></li>
+      </ol>
+{% endblock %}
+{%block content%}
+<div>
+		<div class="modal-content">
+		  	<div class="modal-header">
+				<a href="{% url 'department_list' %}" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+				<h4 class="modal-title">部门修改</h4>
+			</div>
+			<div class="modal-body">
+				<form method="post" id="form_id" class="form-horizontal" role="form"  enctype="multipart/form-data">{% csrf_token %}
+                    <div class="form-group" style="display:none">
+						 <label class="col-md-2 control-label">
+							 部门ID:
+						 </label>
+						 <div class="col-md-4">
+							 <input type="text" class="validate[required] form-control" id="name" name="department_id" data-errormessage="请输入用户名" value="{{group.id}}">
+						 </div>
+					 </div>
+					 <div class="form-group">
+						 <label class="col-md-2 control-label">
+							 部门:
+						 </label>
+						 <div class="col-md-4">
+							 <input type="text" class="validate[required] form-control" id="name" name="department_name" data-errormessage="请输入用户名" value="{{group.name}}">
+						 </div>
+						 <label class="col-md-0">
+							<i class="fa fa-asterisk"> 必填</i>
+						 </label>
+					 </div>
+					<div class="form-group">
+						 <label class="col-md-2 control-label">
+							 部门成员数:
+						 </label>
+						 <div class="col-md-4">
+							 <input type="text" class="validate[required] form-control" id="groupname" name="departmentname" value="{{ group.userpro_set.count }}" disabled>
+						 </div>
+					 </div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">
+							 角色:
+						</label>
+						<div class="col-md-6">
+							<select id="e41"  name="roles" class="validate[required] col-sm-9 js-example-basic-multiple" multiple="multiple" >
+								{% for i in  quanxianid %}
+                                    {% if i.desc in  group.get_user_role  %}
+						  		        <option  selected="selected">{{i.desc}}&nbsp;</option>
+                                    {% else %}
+                                        <option >{{i.desc}}&nbsp;</option>
+                                    {% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					 </div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">
+							 业务线:
+						</label>
+						<div class="col-md-6">
+							<select id="e141"  name="serverline" class="col-sm-9 js-example-basic-multiple" multiple="multiple" >
+								{% for i in  spt %}
+                                    {% if i.Name in  group.get_user_type  %}
+						  		        <option  selected="selected">{{i.Name}}&nbsp;</option>
+                                    {% else %}
+                                        <option>{{i.Name}}&nbsp;</option>
+                                    {% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					 </div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">保存</button>
+						<a href="{% url 'department_list' %}" type="button" class="btn btn-default" data-dismiss="modal">取消</a>
+					</div>
+			   </form>
+		  	</div>
+		  	</div>
+</div>
+{% endblock %}
+
+
+
+
+

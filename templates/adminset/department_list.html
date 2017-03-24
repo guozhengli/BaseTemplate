@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+{% endblock %}
+{% block navigation %}
+    <h1>
+        部门管理
+        <small>部门相关信息</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">department</a></li>
+      </ol>
+{% endblock %}
+{%block content%}
+    {% include 'messages.html' %}
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">角色列表</h3><a href="{% url 'add_department' %}" class="box-tools "><span class="badge bg-green">新增部门</span></a>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+              <table id="view_table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>部门</th>
+                        <th>部门成员</th>
+                        <th>部门权限</th>
+                        <th>管理的项目</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                        <tr>
+                            <td>{{ department.id }}</td>
+                            <td>{{ department.name}}</td>
+                            <td>{{ department.userpro_set.count }}</td>
+                            <td>
+                                 {% for role in  department.role_set.values %}
+                                    {{role.desc}},
+                                 {% endfor %}
+                            </td>
+                            <td>
+                                 {% for project in dep.project_type_set.values %}
+                                    {{project.Name}}
+                                 {% endfor %}
+                            </td>
+                            <td>
+                                <a href="{% url "modify_department" department.id %}" style="margin-right: 15px" class="badge bg-yellow" ><i class="fa fa-pencil-square-o"></i>权限</a>
+                                <a href="{% url "del_department" department.id %}" onclick="return confirm('确认要删除项目吗？')" class="badge bg-red"><i class="fa fa-trash-o"></i>删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>部门</th>
+                        <th>部门成员</th>
+                        <th>部门权限</th>
+                        <th>管理的项目</th>
+                        <th>操作</th>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+    <!-- /.row -->
+{% endblock %}
+{% block script %}
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script>
+  $(function () {
+    $('#view_table').DataTable({
+        "aaSorting": [[1, "asc"]],
+           "bStateSave": true,
+          "sPaginationType": "full_numbers",
+          "oLanguage": {
+              "sLengthMenu": "每页显示 _MENU_ 条记录",
+              "sZeroRecords": "对不起，查询不到任何相关数据",
+              "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+              "sInfoEmtpy": "找不到相关数据",
+              "sInfoFiltered": "数据表中共为 _MAX_ 条记录)",
+              "sProcessing": "正在加载中...",
+              "sSearch": "搜索",
+              "sUrl": "",
+              "oPaginate": {
+                  "sFirst":    "第一页",
+                  "sPrevious": " 上一页 ",
+                  "sNext":     " 下一页 ",
+                  "sLast":     " 最后一页 "
+              }
+          }
+    });
+  });
+  $('#view_table tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+
+    $('#button').click( function () {
+        alert( table.rows('.selected').data().length +' row(s) selected' );
+    } );
+</script>
+{% endblock %}

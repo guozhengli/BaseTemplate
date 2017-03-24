@@ -1,0 +1,76 @@
+﻿{% extends "base1.html" %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/static/login/css/uniform.default.min.css" />
+    <script type="text/javascript" src="/static/login/js/jquery.uniform.min.js"></script>
+	<script type="text/javascript" src="/static/login/js/jquery.backstretch.min.js"></script>
+    <!--login -->
+    <link rel="stylesheet" type="text/css" href="/static/login/css/cloud-admin.css" >
+    <link rel="stylesheet" type="text/css"  href="/static/login/css/default.css" id="skin-switcher" >
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" >
+{% endblock %}
+
+{% block setPage %}App.setPage("login"); {% endblock %}
+{% block all_content %}
+<!-- LOGIN -->
+<section id="login" class="visible">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-box">
+                    <div id="logo" class="center">
+                    <a href="/"><img src="/static/login/img/home-logo.png"  alt="logo name" /></a>
+                    </div>
+                    <h3 class="center"><b>运维平台</b></h3>
+                     <div class="divide-40"></div>
+                    {% if messages %}
+                            <div class="alert alert-success span10">
+                                <a href="#" class="close" data-dismiss="alert">×</a>
+                                <h4 class="alert-heading">提示：</h4>
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </div>
+                    {% endif %}
+                    <form enctype="multipart/form-data" id="form1" name="form1" method="post" action="" >{% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group{% if field.errors %} has-error{% endif %}">
+                                <label class="control-label">{{ field.label_tag }}</label>
+                                <div>
+                                    {{field}}
+                                    <span class="help-block">
+                                        {% for error in field.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                        {{ field.help_text }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <div class="has-error">
+                                {% for error in form.non_field_errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="login-helpers">
+                                <a href="{% url  'forgotpassword' %}" style="color: azure" >忘记密码?</a>
+                          </div> <br>
+                          <div>
+                                <button type="submit" class="btn btn-danger">{{ user_do }}</button>
+                          </div>
+                    </form>
+                    <div class="divide-20"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/LOGIN -->
+<script src="/static/login/js/jquery-2.0.3.min.js"></script>
+<script src="/static/login/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/login/js/bootstrap.min.js"></script>
+<script src="/static/login/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="/static/login/js/jquery.cookie.min.js"></script>
+<script src="/static/login/js/script.js"></script>
+{% endblock %}

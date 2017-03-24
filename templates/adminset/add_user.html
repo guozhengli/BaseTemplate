@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/js/bootstrap-switch/bootstrap-switch.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"  />
+<!--表单控制 -->
+<script src="/static/js/jquery.validationEngine.js"></script>
+<script src="/static/js/jquery.validationEngine.min.js"></script>
+<script src="/static/js/jquery.validationEngine-zh_CN.js"></script>
+
+<script type="text/javascript" src="/static/js/select2.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+
+<script type="text/javascript">
+$(".js-example-basic-multiple").select2();
+</script>
+<script src="/static/js/script.js"></script>
+<script>
+	jQuery(document).ready(function() {
+		App.setPage("/upload/upload/");  //Set current page
+		App.init(); //Initialise plugins and elements
+	});
+</script>
+
+<script type="text/javascript">
+	$('#form_id').validationEngine('attach', {
+		  promptPosition: 'centerRight',
+		  scroll: true,
+		  autoHidePrompt:true,
+		  autoHideDelay:3000,
+		  showOneMessage:true,
+		});
+</script>
+{% endblock %}
+{% block navigation %}
+    <h1>
+        创建用户
+        <small>用户相关信息</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">user</a></li>
+      </ol>
+{% endblock %}
+{%block content%}
+<div>
+		<div class="modal-content">
+		  	<div class="modal-header">
+				<a href="{% url 'users_list' %}" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+				<h4 class="modal-title">创建用户</h4>
+			</div>
+			<div class="modal-body">
+				<form method="post" id="form_id" class="form-horizontal" role="form"  enctype="multipart/form-data">{% csrf_token %}
+					 <div class="form-group">
+						 <label class="col-md-2 control-label">
+							 用户名:
+						 </label>
+						 <div class="col-md-4">
+							 <input type="text" class="validate[required] form-control" id="name" name="username" data-errormessage="请输入用户名">
+						 </div>
+						 <label class="col-md-0">
+							<i class="fa fa-asterisk"> 必填</i>
+						 </label>
+					 </div>
+					 <div class="form-group">
+						<label class="col-md-2 control-label">
+							 密码:
+						</label>
+						<div class="col-md-4">
+							<input type="password" name="password" class="validate[required,minSize[6]] text-input form-control colorpicker" id="password" >
+						</div>
+						<label class="col-md-0">
+							<i class="fa fa-asterisk"> 必填</i>
+						</label>
+					 </div>
+					 <div class="form-group">
+						<label class="col-md-2 control-label">
+							 再次密码:
+						</label>
+						<div class="col-md-4">
+							<input type="password" class="validate[required,equals[password]] text-input form-control colorpicker" >
+						</div>
+						<label class="col-md-0">
+							<i class="fa fa-asterisk"> 必填</i>
+						</label>
+					 </div>
+					 <div class="form-group">
+						<label class="col-md-2 control-label">
+							 姓名:
+						</label>
+						<div class="col-md-4">
+							<input type="text" name="full_name" class="validate[required] form-control colorpicker">
+						</div>
+                         <label class="col-md-0">
+							<i class="fa fa-asterisk"> 必填</i>
+						</label>
+					 </div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">
+							 部门:
+						</label>
+						<div class="col-md-4">
+							<select   name="department"  class="validate[required] col-sm-9 js-example-basic-multiple" >
+							{% for department in departments %}
+						  		<option >{{department.name}}</option>
+							{% endfor %}
+							</select>
+						</div>
+					 </div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label">
+							 邮箱:
+						</label>
+						<div class="col-md-4">
+							<input type="email" name="email" id="email"  class="validate[required,custom[email]] form-control colorpicker"
+								   data-errormessage-value-missing="E-mail 不能为空" data-errormessage-custom-error="E-mail 格式应为：someone@zgxcw.com">
+						</div>
+						<label class="col-md-0">
+							<i class="fa fa-asterisk"> 必填</i>
+						</label>
+					 </div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">
+							 是否允许登录:
+						</label>
+						<div class="col-md-4">
+							<div class="make-switch switch-mini" data-on="info" data-off="success" data-on-label="<i class='fa fa-check icon-white'></i>" data-off-label="<i class='fa fa-times'></i>">
+								<input type="checkbox" name="islogin" >
+							</div>
+						</div>
+					 </div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">完成</button>
+						<a href="{% url 'users_list' %}" type="button" class="btn btn-default" data-dismiss="modal">取消</a>
+					</div>
+			   </form>
+		  	</div>
+		  	</div>
+</div>
+{% endblock %}
+
+
+
+
+

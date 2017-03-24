@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+<!--block upload start-->
+{% block navigation %}
+    <h1>
+        新增角色
+        <small>角色相关信息</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">Add Role</a></li>
+      </ol>
+{% endblock %}
+{%block content%}
+<div>
+		<div class="modal-content">
+		  	<div class="modal-header">
+				<a href="{% url 'roles_list' %}" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+				<h4 class="modal-title">新增角色</h4>
+			</div>
+			<div class="modal-body">
+                <form class="form-horizontal" role="form" method="post">{% csrf_token %}
+					{% for field in form %}
+                        <div class="form-group{% if field.errors %} has-error{% endif %}">
+                              <label class="col-lg-3 control-label">{{ field.label }}:</label>
+                              <div class="col-lg-5">
+                                {{ field }}
+                                <span class="help-block">
+                                    {% for error in field.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                    {{ field.help_text }}
+                                </span>
+                              </div>
+                        </div>
+                        {{ filed.name }} {{ filed.desc }}
+                    {% endfor %}
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">完成</button>
+						<a href="{% url 'roles_list' %}" type="button" class="btn btn-default" data-dismiss="modal">取消</a>
+					</div>
+			   </form>
+		  	</div>
+		  	</div><!-- /.modal-content -->
+</div>
+
+<!-- /JAVASCRIPTS -->
+{% endblock %}
+
+
+
+
+
+
+

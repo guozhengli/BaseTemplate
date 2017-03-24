@@ -1,0 +1,6 @@
+*.pyc
+.idea/
+local.py
+*bak
+00*
+*.tar.gz

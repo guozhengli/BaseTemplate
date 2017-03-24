@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+{% endblock %}
+{% block navigation %}
+    <h1>
+        用户管理
+        <small>登录用户相关信息</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="#">users</a></li>
+      </ol>
+{% endblock %}
+{%block content%}
+    {% include 'messages.html' %}
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">用户列表</h3><a href="{% url 'add_user' %}" class="box-tools "><span class="badge bg-green">新增用户</span></a>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+              <table id="view_table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>账户</th>
+                        <th>姓名</th>
+                        <th>E-mail</th>
+                        <th>所属部门</th>
+                        <th>角色</th>
+                        <th>登录IP地址</th>
+                        <th>登录时间</th>
+                        <th>允许登录</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                              <td>{{ user.id }}</td>
+                               <td>{{user.name}}</td>
+                                <td>{{user.aliasname}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.department.name}}</td>
+                                <td>
+                                    {% for i in user.role_set.values%}
+                                    {{i.desc}}
+                                    {% endfor %}
+                                </td>
+                                <td>{{user.ip}}</td>
+                                <td>{{user.login_time|date:"Y-m-d H:i:s"}}</td>
+                                <td>{{user.is_active}}</td>
+                            <td>
+                                <a href="{% url "modify_user" user.id %}" style="margin-right: 15px" class="badge bg-yellow" ><i class="fa fa-pencil-square-o"></i>权限</a>
+                                <a href="{% url "del_user" user.id %}" onclick="return confirm('确认要删除项目吗？')" class="badge bg-red"><i class="fa fa-trash-o"></i>删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>账户</th>
+                        <th>姓名</th>
+                        <th>E-mail</th>
+                        <th>所属部门</th>
+                        <th>角色</th>
+                        <th>登录IP地址</th>
+                        <th>登录时间</th>
+                        <th>允许登录</th>
+                        <th>操作</th>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+    <!-- /.row -->
+{% endblock %}
+{% block script %}
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script>
+  $(function () {
+    $('#view_table').DataTable({
+        "aaSorting": [[1, "asc"]],
+           "bStateSave": true,
+          "sPaginationType": "full_numbers",
+          "oLanguage": {
+              "sLengthMenu": "每页显示 _MENU_ 条记录",
+              "sZeroRecords": "对不起，查询不到任何相关数据",
+              "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+              "sInfoEmtpy": "找不到相关数据",
+              "sInfoFiltered": "数据表中共为 _MAX_ 条记录)",
+              "sProcessing": "正在加载中...",
+              "sSearch": "搜索",
+              "sUrl": "",
+              "oPaginate": {
+                  "sFirst":    "第一页",
+                  "sPrevious": " 上一页 ",
+                  "sNext":     " 下一页 ",
+                  "sLast":     " 最后一页 "
+              }
+          }
+    });
+  });
+  $('#view_table tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+
+    $('#button').click( function () {
+        alert( table.rows('.selected').data().length +' row(s) selected' );
+    } );
+</script>
+{% endblock %}

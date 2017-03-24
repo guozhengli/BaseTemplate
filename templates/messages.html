@@ -1,0 +1,11 @@
+{% if messages %}
+    <div class="col-lg-4 col-lg-offset-3">
+        <div class="alert alert-success span10">
+            <a href="#" class="close" data-dismiss="alert">×</a>
+            <h4 class="alert-heading">提示：</h4>
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
